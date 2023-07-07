@@ -7,8 +7,8 @@ from app.modules.prize.schema import PrizeRead
 class PromoRead(BaseModel):
     id: int
     description: str
-    prizes: PrizeRead = None
-    participants: ParticipantRead = None
+    prizes: PrizeRead
+    participants: ParticipantRead
 
 
 class PromoCreate(BaseModel):
