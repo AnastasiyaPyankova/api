@@ -6,22 +6,22 @@ from starlette import status
 
 from app.core.db import get_session
 from app.models import *
-from app.modules.winner.schema import *
+from app.modules.result.schema import *
 
-router = APIRouter(prefix='/winner')
+router = APIRouter(prefix='/result')
 
 
 @router.post('/', status_code=status.HTTP_200_OK)
 def create_winner(
-        data: WinnerCreate,
+        data: ResultCreate,
         db: Session = Depends(get_session)
 ):
-    winner = Winner(winner=data.winner, prize=data.prize)
+    result = Result(winner=data.winner, prize=data.prize)
 
     try:
-        db.add(winner)
+        db.add(result)
         db.commit()
     except IntegrityError:
         db.rollback()
 
-    return winner.to_dict()
+    return result.to_dict()

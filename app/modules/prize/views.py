@@ -5,18 +5,18 @@ from sqlalchemy.orm import Session
 from starlette import status
 
 from app.core.db import get_session
-from app.models import *
-from app.modules.prize.schema import *
+from app.models import Prize
+from app.modules.prize.schema import PrizeCreate
 
 router = APIRouter(prefix='/prize')
 
 
 @router.post('/', status_code=status.HTTP_200_OK)
 def create_prize(
-        description: str,
+        data: PrizeCreate,
         db: Session = Depends(get_session)
 ):
-    prize = Prize(description=description)
+    prize = Prize(description=data.description)
 
     try:
         db.add(prize)

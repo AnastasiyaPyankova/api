@@ -1,5 +1,3 @@
-from typing import List
-
 from sqlalchemy import inspect, Integer, Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -27,11 +25,9 @@ class Promo(BaseMixin):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
-    description = Column(String, nullable=False)
-    prizes = Column(Integer, ForeignKey('prizes.id'), nullable=False)
-    prize = relationship('Prize')
-    participants = Column(Integer, ForeignKey('participants.id'), nullable=False)
-    participant = relationship('Participant')
+    description = Column(String, nullable=True)
+    prizes = relationship('Prize', secondary='betweenpromoprizes')
+    participants = relationship('Participant', secondary='betweenpromoparticipants')
 
 
 class Prize(BaseMixin):
@@ -48,10 +44,25 @@ class Participant(BaseMixin):
     name = Column(String, nullable=False)
 
 
-class Winner(BaseMixin):
+class Result(BaseMixin):
     __tablename__ = 'winners'
 
-    winner = Column(Integer, ForeignKey('participants.id'), nullable=False, primary_key=True)
-    winners = relationship('Participant')
-    prize = Column(Integer, ForeignKey('prizes.id'), nullable=False)
-    prizes = relationship('Prize')
+    id = Column(Integer, primary_key=True)
+    winner_id = Column(Integer, ForeignKey('participants.id'), nullable=False)
+    winner = relationship('Participant')
+    prize_id = Column(Integer, ForeignKey('prizes.id'), nullable=False)
+    prize = relationship('Prize')
+
+
+class BetweenPromoPrize(BaseMixin):
+    __tablename__ = 'betweenpromoprizes'
+
+    promo_id = Column(Integer, ForeignKey('promos.id'), primary_key=True)
+    prize_id = Column(Integer, ForeignKey('prizes.id'), primary_key=True)
+
+
+class BetweenPromoParticipant(BaseMixin):
+    __tablename__ = 'betweenpromoparticipants'
+
+    promo_id = Column(Integer, ForeignKey('promos.id'), primary_key=True)
+    participant_id = Column(Integer, ForeignKey('participants.id'), primary_key=True)

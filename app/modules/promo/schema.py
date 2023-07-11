@@ -6,9 +6,10 @@ from app.modules.prize.schema import PrizeRead
 
 class PromoRead(BaseModel):
     id: int
+    name: str
     description: str
-    prizes: PrizeRead
-    participants: ParticipantRead
+    # prizes: PrizeRead
+    # participants: ParticipantRead
 
 
 class PromoCreate(BaseModel):

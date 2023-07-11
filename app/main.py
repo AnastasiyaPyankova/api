@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from app.modules.participants.views import router as participants_router
 from app.modules.prize.views import router as prize_router
 from app.modules.promo.views import router as promo_router
-from app.modules.winner.views import router as winner_router
+from app.modules.result.views import router as winner_router
 
 app = FastAPI()
 
